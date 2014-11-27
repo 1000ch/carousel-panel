@@ -1,10 +1,15 @@
 {
   "name": "carousel-panel",
   "version": "0.1.0",
+  "description": "Carousel gallery component.",
+  "main": "carousel-panel.html",
   "authors": [
     "1000ch <shogo.sensui@gmail.com>"
   ],
   "license": "MIT",
+  "keywords": [
+    "web-components"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
