@@ -54,13 +54,14 @@
 
     var images = this.getElementsByTagName('img');
     var width = 0;
-    for (var i = 0, l = this.images.length;i < l;i++) {
-      width += this.images[i].width;
+    for (var i = 0, l = images.length;i < l;i++) {
+      width += images[i].width;
     }
 
     lastIndex = images.length - 1;
     panelWidth = width / l;
 
+    container.style.width = panelWidth + 'px';
     wrap.style.width = width + 'px';
     wrap.addEventListener(swipeStart, onSwipeStart);
 
@@ -69,6 +70,8 @@
     var moveDistance;
 
     function onSwipeStart(e) {
+      
+      e.preventDefault();
 
       var x;
       var y;
