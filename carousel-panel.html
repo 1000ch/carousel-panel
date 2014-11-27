@@ -25,123 +25,123 @@
 </template>
 
 <script>
-  var currentScript = document.currentScript;
-  var ownerDocument = currentScript.ownerDocument;
-  var CarouselPanelPrototype = Object.create(HTMLElement.prototype);
+  window.CarouselPanel = (function () {
+    var currentScript = document.currentScript;
+    var ownerDocument = currentScript.ownerDocument;
+    var CarouselPanelPrototype = Object.create(HTMLElement.prototype);
 
-  var isTouchDevice = 'ontouchstart' in window;
-  var swipeStart    = isTouchDevice ? 'touchstart' : 'mousedown';
-  var swipeMove     = isTouchDevice ? 'touchmove'  : 'mousemove';
-  var swipeEnd      = isTouchDevice ? 'touchend'   : 'mouseup';
-  var panelWidth    = 0;
-  var lastIndex     = 0;
+    var isTouchDevice = 'ontouchstart' in window;
+    var swipeStart    = isTouchDevice ? 'touchstart' : 'mousedown';
+    var swipeMove     = isTouchDevice ? 'touchmove'  : 'mousemove';
+    var swipeEnd      = isTouchDevice ? 'touchend'   : 'mouseup';
+    var panelWidth    = 0;
+    var lastIndex     = 0;
 
-  CarouselPanelPrototype.createdCallback = function () {
+    CarouselPanelPrototype.createdCallback = function () {
 
-    var template = ownerDocument.querySelector('#template-carousel-panel');
-    var clone = document.importNode(template.content, true);
+      var template = ownerDocument.querySelector('#template-carousel-panel');
+      var clone = document.importNode(template.content, true);
 
-    this.shadowRoot = this.createShadowRoot();
-    this.shadowRoot.appendChild(clone);
+      this.shadowRoot = this.createShadowRoot();
+      this.shadowRoot.appendChild(clone);
+    };
 
-    
-  };
-  
-  CarouselPanelPrototype.attachedCallback = function () {
+    CarouselPanelPrototype.attachedCallback = function () {
 
-    var container = this.shadowRoot.querySelector('#container');
-    var wrap = container.querySelector('#wrap');
+      var container = this.shadowRoot.querySelector('#container');
+      var wrap = container.querySelector('#wrap');
 
-    var images = this.getElementsByTagName('img');
-    var width = 0;
-    for (var i = 0, l = images.length;i < l;i++) {
-      width += images[i].width;
-    }
-
-    lastIndex = images.length - 1;
-    panelWidth = width / l;
-
-    container.style.width = panelWidth + 'px';
-    wrap.style.width = width + 'px';
-    wrap.addEventListener(swipeStart, onSwipeStart);
-
-    var currentIndex = 0;
-    var startPoint;
-    var moveDistance;
-
-    function onSwipeStart(e) {
-      
-      e.preventDefault();
-
-      var x;
-      var y;
-      if (isTouchDevice) {
-        if (e.touches.length > 1 || e.scale && e.scale !== 1) {
-          return;
-        }
-        x = e.touches[0].pageX;
-        y = e.touches[0].pageY;
-      } else {
-        x = e.pageX;
-        y = e.pageY;
+      var images = this.getElementsByTagName('img');
+      var width = 0;
+      for (var i = 0, l = images.length;i < l;i++) {
+        width += images[i].width;
       }
 
-      startPoint = {
-        x: x,
-        y: y
-      };
+      lastIndex = images.length - 1;
+      panelWidth = width / l;
 
-      wrap.addEventListener(swipeMove, onSwipeMove);
-      wrap.addEventListener(swipeEnd, onSwipeEnd);
-    }
+      container.style.width = panelWidth + 'px';
+      wrap.style.width = width + 'px';
+      wrap.addEventListener(swipeStart, onSwipeStart);
 
-    function onSwipeMove(e) {
+      var currentIndex = 0;
+      var startPoint;
+      var moveDistance;
 
-      var x;
-      var y;
-      if (isTouchDevice) {
-        if (e.touches.length > 1 || e.scale && e.scale !== 1) {
-          return;
-        }
-        x = e.touches[0].pageX;
-        y = e.touches[0].pageY;
-      } else {
-        x = e.pageX;
-        y = e.pageY;
-      }
+      function onSwipeStart(e) {
 
-      moveDistance = {
-        x: x - startPoint.x,
-        y: y - startPoint.y
-      };
-      
-      wrap.style.transform = 'translate(' + (-panelWidth * currentIndex + moveDistance.x) + 'px, 0)';
-    }
+        e.preventDefault();
 
-    function onSwipeEnd(e) {
-
-      if (Math.abs(moveDistance.x) > panelWidth / 2) {
-        if (moveDistance.x < 0) {
-          if (currentIndex !== lastIndex) {
-            currentIndex++;
+        var x;
+        var y;
+        if (isTouchDevice) {
+          if (e.touches.length > 1 || e.scale && e.scale !== 1) {
+            return;
           }
+          x = e.touches[0].pageX;
+          y = e.touches[0].pageY;
         } else {
-          if (currentIndex !== 0) {
-            currentIndex--;
-          }
+          x = e.pageX;
+          y = e.pageY;
         }
+
+        startPoint = {
+          x: x,
+          y: y
+        };
+
+        wrap.addEventListener(swipeMove, onSwipeMove);
+        wrap.addEventListener(swipeEnd, onSwipeEnd);
       }
 
-      wrap.style.transform = 'translate(' + (-panelWidth * currentIndex) + 'px, 0)';
+      function onSwipeMove(e) {
 
-      wrap.removeEventListener(swipeMove, onSwipeMove);
-      wrap.removeEventListener(swipeEnd, onSwipeEnd);
-    }
+        var x;
+        var y;
+        if (isTouchDevice) {
+          if (e.touches.length > 1 || e.scale && e.scale !== 1) {
+            return;
+          }
+          x = e.touches[0].pageX;
+          y = e.touches[0].pageY;
+        } else {
+          x = e.pageX;
+          y = e.pageY;
+        }
 
-    container.style.visibility = 'visible';
-  };
+        moveDistance = {
+          x: x - startPoint.x,
+          y: y - startPoint.y
+        };
 
-  window.CarouselPanel = document.registerElement('carousel-panel', {
-    prototype: CarouselPanelPrototype
-  });
+        wrap.style.transform = 'translate(' + (-panelWidth * currentIndex + moveDistance.x) + 'px, 0)';
+      }
+
+      function onSwipeEnd(e) {
+
+        if (Math.abs(moveDistance.x) > panelWidth / 2) {
+          if (moveDistance.x < 0) {
+            if (currentIndex !== lastIndex) {
+              currentIndex++;
+            }
+          } else {
+            if (currentIndex !== 0) {
+              currentIndex--;
+            }
+          }
+        }
+
+        wrap.style.transform = 'translate(' + (-panelWidth * currentIndex) + 'px, 0)';
+
+        wrap.removeEventListener(swipeMove, onSwipeMove);
+        wrap.removeEventListener(swipeEnd, onSwipeEnd);
+      }
+
+      container.style.visibility = 'visible';
+    };
+
+    return document.registerElement('carousel-panel', {
+      prototype: CarouselPanelPrototype
+    });
+  })();
 </script>
