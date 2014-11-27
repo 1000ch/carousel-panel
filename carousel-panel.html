@@ -68,26 +68,39 @@
       var startPoint;
       var moveDistance;
 
+      function getOffset(e) {
+
+        var offset = {
+          x: 0,
+          y: 0
+        };
+
+        if (isTouchDevice) {
+          offset.x = e.touches[0].pageX;
+          offset.y = e.touches[0].pageY;
+        } else {
+          offset.x = e.pageX;
+          offset.y = e.pageY;
+        }
+
+        return offset;
+      }
+
       function onSwipeStart(e) {
 
         e.preventDefault();
 
-        var x;
-        var y;
         if (isTouchDevice) {
           if (e.touches.length > 1 || e.scale && e.scale !== 1) {
             return;
           }
-          x = e.touches[0].pageX;
-          y = e.touches[0].pageY;
-        } else {
-          x = e.pageX;
-          y = e.pageY;
         }
 
+        var offset = getOffset(e);
+
         startPoint = {
-          x: x,
-          y: y
+          x: offset.x,
+          y: offset.y
         };
 
         wrap.addEventListener(swipeMove, onSwipeMove);
@@ -96,22 +109,17 @@
 
       function onSwipeMove(e) {
 
-        var x;
-        var y;
         if (isTouchDevice) {
           if (e.touches.length > 1 || e.scale && e.scale !== 1) {
             return;
           }
-          x = e.touches[0].pageX;
-          y = e.touches[0].pageY;
-        } else {
-          x = e.pageX;
-          y = e.pageY;
         }
 
+        var offset = getOffset(e);
+
         moveDistance = {
-          x: x - startPoint.x,
-          y: y - startPoint.y
+          x: offset.x - startPoint.x,
+          y: offset.y - startPoint.y
         };
 
         wrap.style.transform = 'translate(' + (-panelWidth * currentIndex + moveDistance.x) + 'px, 0)';
@@ -131,6 +139,7 @@
           }
         }
 
+        wrap.style.transitionDuration = '100ms';
         wrap.style.transform = 'translate(' + (-panelWidth * currentIndex) + 'px, 0)';
 
         wrap.removeEventListener(swipeMove, onSwipeMove);
