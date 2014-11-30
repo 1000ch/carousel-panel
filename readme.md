@@ -4,6 +4,20 @@
 
 Carousel gallery component.
 
+## Install
+
+Using [npm](https://www.npmjs.org/package/carousel-panel):
+
+```bash
+$ npm install carousel-panel
+```
+
+Using [bower](http://bower.io/search/?q=carousel-panel):
+
+```bash
+$ bower install carousel-panel
+```
+
 ## Usage
 
 Import `carousel-panel.html`.
