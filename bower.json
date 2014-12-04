@@ -1,6 +1,6 @@
 {
   "name": "carousel-panel",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Carousel gallery component.",
   "main": "carousel-panel.html",
   "authors": [
@@ -17,7 +17,8 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "markdown.css": "~0.1.1"
+  "devDependencies": {
+    "markdown.css": "~0.1.1",
+    "syntax-highlight": "~0.1.3"
   }
 }
