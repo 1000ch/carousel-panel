@@ -50,41 +50,29 @@
 
       var container = this.shadowRoot.querySelector('#container');
       var wrap = container.querySelector('#wrap');
-
       var images = this.getElementsByTagName('img');
+
       var width = 0;
+      var maxWidth = 0;
+      var totalWidth = 0;
       for (var i = 0, l = images.length;i < l;i++) {
-        width += images[i].width;
+        width = images[i].width;
+        if (maxWidth < width) {
+          maxWidth = width;
+        }
+        totalWidth += width;
       }
 
       lastIndex = images.length - 1;
-      panelWidth = width / l;
+      panelWidth = maxWidth;
 
-      container.style.width = panelWidth + 'px';
-      wrap.style.width = width + 'px';
+      container.style.width = maxWidth + 'px';
+      wrap.style.width = totalWidth + 'px';
       wrap.addEventListener(swipeStart, onSwipeStart);
 
       var currentIndex = 0;
       var startPoint;
       var moveDistance;
-
-      function getOffset(e) {
-
-        var offset = {
-          x: 0,
-          y: 0
-        };
-
-        if (isTouchDevice) {
-          offset.x = e.touches[0].pageX;
-          offset.y = e.touches[0].pageY;
-        } else {
-          offset.x = e.pageX;
-          offset.y = e.pageY;
-        }
-
-        return offset;
-      }
 
       function onSwipeStart(e) {
 
@@ -96,7 +84,10 @@
           }
         }
 
-        var offset = getOffset(e);
+        var offset = {
+          x: isTouchDevice ? e.touches[0].pageX : e.pageX,
+          y: isTouchDevice ? e.touches[0].pageY : e.pageY
+        };
 
         startPoint = {
           x: offset.x,
@@ -109,20 +100,19 @@
 
       function onSwipeMove(e) {
 
-        if (isTouchDevice) {
-          if (e.touches.length > 1 || e.scale && e.scale !== 1) {
-            return;
-          }
-        }
-
-        var offset = getOffset(e);
+        var offset = {
+          x: isTouchDevice ? e.touches[0].pageX : e.pageX,
+          y: isTouchDevice ? e.touches[0].pageY : e.pageY
+        };
 
         moveDistance = {
           x: offset.x - startPoint.x,
           y: offset.y - startPoint.y
         };
 
-        wrap.style.transform = 'translate(' + (-panelWidth * currentIndex + moveDistance.x) + 'px, 0)';
+        var distance = -panelWidth * currentIndex + moveDistance.x;
+
+        wrap.style.transform = 'translate(' + distance + 'px, 0)';
       }
 
       function onSwipeEnd(e) {
@@ -139,8 +129,10 @@
           }
         }
 
+        var distance = -panelWidth * currentIndex;
+
         wrap.style.transitionDuration = '100ms';
-        wrap.style.transform = 'translate(' + (-panelWidth * currentIndex) + 'px, 0)';
+        wrap.style.transform = 'translate(' + distance + 'px, 0)';
 
         wrap.removeEventListener(swipeMove, onSwipeMove);
         wrap.removeEventListener(swipeEnd, onSwipeEnd);
