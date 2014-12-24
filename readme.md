@@ -38,4 +38,4 @@ Put `<carousel-panel>` tag including `<img>` tags.
 
 ## License
 
-MIT
+MIT: http://1000ch.mit-license.org
