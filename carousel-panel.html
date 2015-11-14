@@ -26,21 +26,21 @@
 
 <script>
   window.CarouselPanel = (function () {
-    var currentScript = document.currentScript;
-    var ownerDocument = currentScript.ownerDocument;
-    var CarouselPanelPrototype = Object.create(HTMLElement.prototype);
+    const currentScript = document.currentScript;
+    const ownerDocument = currentScript.ownerDocument;
+    const CarouselPanelPrototype = Object.create(HTMLElement.prototype);
 
-    var isTouchDevice = 'ontouchstart' in window;
-    var swipeStart    = isTouchDevice ? 'touchstart' : 'mousedown';
-    var swipeMove     = isTouchDevice ? 'touchmove'  : 'mousemove';
-    var swipeEnd      = isTouchDevice ? 'touchend'   : 'mouseup';
-    var panelWidth    = 0;
-    var lastIndex     = 0;
+    let isTouchDevice = 'ontouchstart' in window;
+    let swipeStart    = isTouchDevice ? 'touchstart' : 'mousedown';
+    let swipeMove     = isTouchDevice ? 'touchmove'  : 'mousemove';
+    let swipeEnd      = isTouchDevice ? 'touchend'   : 'mouseup';
+    let panelWidth    = 0;
+    let lastIndex     = 0;
 
     CarouselPanelPrototype.createdCallback = function () {
 
-      var template = ownerDocument.querySelector('#template-carousel-panel');
-      var clone = document.importNode(template.content, true);
+      let template = ownerDocument.querySelector('#template-carousel-panel');
+      let clone = document.importNode(template.content, true);
 
       this.shadowRoot = this.createShadowRoot();
       this.shadowRoot.appendChild(clone);
@@ -48,14 +48,14 @@
 
     CarouselPanelPrototype.attachedCallback = function () {
 
-      var container = this.shadowRoot.querySelector('#container');
-      var wrap = container.querySelector('#wrap');
-      var images = this.getElementsByTagName('img');
+      let container = this.shadowRoot.querySelector('#container');
+      let wrap = container.querySelector('#wrap');
+      let images = this.getElementsByTagName('img');
 
-      var width = 0;
-      var maxWidth = 0;
-      var totalWidth = 0;
-      for (var i = 0, l = images.length;i < l;i++) {
+      let width = 0;
+      let maxWidth = 0;
+      let totalWidth = 0;
+      for (let i = 0, l = images.length;i < l;i++) {
         width = images[i].width;
         if (maxWidth < width) {
           maxWidth = width;
@@ -66,13 +66,13 @@
       lastIndex = images.length - 1;
       panelWidth = maxWidth;
 
-      container.style.width = maxWidth + 'px';
-      wrap.style.width = totalWidth + 'px';
+      container.style.width = `${maxWidth}px`;
+      wrap.style.width = `${totalWidth}px`;
       wrap.addEventListener(swipeStart, onSwipeStart);
 
-      var currentIndex = 0;
-      var startPoint;
-      var moveDistance;
+      let currentIndex = 0;
+      let startPoint;
+      let moveDistance;
 
       function onSwipeStart(e) {
 
@@ -84,7 +84,7 @@
           }
         }
 
-        var offset = {
+        let offset = {
           x: isTouchDevice ? e.touches[0].pageX : e.pageX,
           y: isTouchDevice ? e.touches[0].pageY : e.pageY
         };
@@ -100,7 +100,7 @@
 
       function onSwipeMove(e) {
 
-        var offset = {
+        let offset = {
           x: isTouchDevice ? e.touches[0].pageX : e.pageX,
           y: isTouchDevice ? e.touches[0].pageY : e.pageY
         };
@@ -110,9 +110,9 @@
           y: offset.y - startPoint.y
         };
 
-        var distance = -panelWidth * currentIndex + moveDistance.x;
+        let distance = -panelWidth * currentIndex + moveDistance.x;
 
-        wrap.style.transform = 'translate(' + distance + 'px, 0)';
+        wrap.style.transform = `translate(${distance}px, 0)`;
       }
 
       function onSwipeEnd(e) {
@@ -129,10 +129,10 @@
           }
         }
 
-        var distance = -panelWidth * currentIndex;
+        let distance = -panelWidth * currentIndex;
 
         wrap.style.transitionDuration = '100ms';
-        wrap.style.transform = 'translate(' + distance + 'px, 0)';
+        wrap.style.transform = `translate(${distance}px, 0)`;
 
         wrap.removeEventListener(swipeMove, onSwipeMove);
         wrap.removeEventListener(swipeEnd, onSwipeEnd);
