@@ -1,8 +1,6 @@
 #  [`<carousel-panel>`](http://1000ch.github.io/carousel-panel)
 
-## About
-
-Carousel gallery component.
+Custom element that provides Carousel gallery.
 
 ## Install
 
