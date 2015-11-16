@@ -26,21 +26,27 @@
 
 <script>
   window.CarouselPanel = (function () {
+    "use strict";
+
     const currentScript = document.currentScript;
     const ownerDocument = currentScript.ownerDocument;
     const CarouselPanelPrototype = Object.create(HTMLElement.prototype);
 
-    let isTouchDevice = 'ontouchstart' in window;
-    let swipeStart    = isTouchDevice ? 'touchstart' : 'mousedown';
-    let swipeMove     = isTouchDevice ? 'touchmove'  : 'mousemove';
-    let swipeEnd      = isTouchDevice ? 'touchend'   : 'mouseup';
+    const isTouchDevice = 'ontouchstart' in window;
+    const swipeStart    = isTouchDevice ? 'touchstart' : 'mousedown';
+    const swipeMove     = isTouchDevice ? 'touchmove'  : 'mousemove';
+    const swipeEnd      = isTouchDevice ? 'touchend'   : 'mouseup';
     let panelWidth    = 0;
     let lastIndex     = 0;
 
+    Object.defineProperty(CarouselPanelPrototype, 'shadowRoot', {
+      writable: true
+    });
+
     CarouselPanelPrototype.createdCallback = function () {
 
-      let template = ownerDocument.querySelector('#template-carousel-panel');
-      let clone = document.importNode(template.content, true);
+      const template = ownerDocument.querySelector('#template-carousel-panel');
+      const clone = document.importNode(template.content, true);
 
       this.shadowRoot = this.createShadowRoot();
       this.shadowRoot.appendChild(clone);
