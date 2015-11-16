@@ -1,7 +1,7 @@
 {
   "name": "carousel-panel",
   "version": "1.0.0",
-  "description": "Carousel gallery component.",
+  "description": "Custom element that provides Carousel gallery.",
   "scripts": {
     "start": "python -m http.server"
   },
@@ -10,7 +10,8 @@
     "url": "https://github.com/1000ch/carousel-panel.git"
   },
   "keywords": [
-    "WebComponents"
+    "WebComponents",
+    "web-components"
   ],
   "author": {
     "name": "1000ch",

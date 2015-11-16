@@ -1,13 +1,14 @@
 {
   "name": "carousel-panel",
   "version": "1.0.0",
-  "description": "Carousel gallery component.",
+  "description": "Custom element that provides Carousel gallery.",
   "main": "carousel-panel.html",
   "authors": [
     "1000ch <shogo.sensui@gmail.com>"
   ],
   "license": "MIT",
   "keywords": [
+    "WebComponents",
     "web-components"
   ],
   "ignore": [
@@ -16,8 +17,5 @@
     "bower_components",
     "test",
     "tests"
-  ],
-  "devDependencies": {
-    "primer-css": "~2.2.1"
-  }
+  ]
 }
